@@ -7,14 +7,14 @@ import Container from "@mui/material/Container";
 type ReactNode = React.ReactNode | void;
 
 type PageProps = {
-    children: ReactNode;
+    children: React.ReactNode;
 };
 
-const BaseLayout = ({ children }: PageProps) => {
+const BaseLayout = (props: PageProps) => {
     return (
         <>
             <Header />
-            <Container maxWidth="lg">{ children }</Container>
+            <Container maxWidth="lg">{ props.children }</Container>
         </>
     );
 };
