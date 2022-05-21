@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Inventory\CategoriesController;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +17,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('app');
 });
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::name('inventory.')->group(function () {
+    Route::resource('categories', CategoriesController::class)->names('categories');
+});
