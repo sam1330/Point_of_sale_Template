@@ -5,7 +5,9 @@ import { InertiaProgress } from "@inertiajs/progress";
 
 import BaseLayout from "./Layout/BaseLayout.tsx";
 
-InertiaProgress.init();
+InertiaProgress.init({
+    color: "#fa051d",
+});
 createInertiaApp({
     resolve: (name) => {
         const page = require(`./Pages/${name}`).default;

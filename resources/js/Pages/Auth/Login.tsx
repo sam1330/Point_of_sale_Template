@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useRef } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -25,13 +25,16 @@ interface LoginForm {
 }
 
 const Login = () => {
+
+    const submitBtn = useRef<HTMLButtonElement>(null);
+
     const { data, setData, post, processing, errors } = useForm<LoginForm>({
         email: "",
         password: "",
         remember: false,
     }); 
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement> | any) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
         console.log({
@@ -101,7 +104,9 @@ const Login = () => {
                                 autoComplete="email"
                                 autoFocus
                                 value={data.email}
-                                onChange={(e) => setData("email", e.target.value)}
+                                onChange={(e) =>
+                                    setData("email", e.target.value)
+                                }
                             />
                             <TextField
                                 margin="normal"
@@ -113,7 +118,14 @@ const Login = () => {
                                 id="password"
                                 autoComplete="current-password"
                                 value={data.password}
-                                onChange={(e) => setData("password", e.target.value)}
+                                onChange={(e) =>
+                                    setData("password", e.target.value)
+                                }
+                                onKeyUp={(e) => {
+                                    if (e.key === "Enter") {
+                                        post('/login');
+                                    }
+                                }}
                             />
                             <FormControlLabel
                                 control={
@@ -122,7 +134,10 @@ const Login = () => {
                                         color="primary"
                                         checked={data.remember}
                                         onChange={(e) =>
-                                            setData("remember", e.target.checked)
+                                            setData(
+                                                "remember",
+                                                e.target.checked
+                                            )
                                         }
                                     />
                                 }
@@ -132,8 +147,9 @@ const Login = () => {
                                 fullWidth
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
-                                onClick={() => post('/login')}
+                                onClick={() => post("/login")}
                                 disabled={processing}
+                                ref={submitBtn}
                             >
                                 Sign In
                             </Button>

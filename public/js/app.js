@@ -32694,6 +32694,8 @@ var MenuItem_1 = __importDefault(__webpack_require__(/*! @mui/material/MenuItem 
 
 var Adb_1 = __importDefault(__webpack_require__(/*! @mui/icons-material/Adb */ "./node_modules/@mui/icons-material/Adb.js"));
 
+var inertia_1 = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+
 var pages = ["Products", "Pricing", "Blog"];
 var settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -32720,8 +32722,12 @@ var Header = function Header() {
     setAnchorElNav(null);
   };
 
-  var handleCloseUserMenu = function handleCloseUserMenu() {
+  var handleCloseUserMenu = function handleCloseUserMenu(setting) {
     setAnchorElUser(null);
+
+    if (setting === "Logout") {
+      inertia_1.Inertia.post("/logout");
+    }
   };
 
   return react_1["default"].createElement(AppBar_1["default"], {
@@ -32875,7 +32881,9 @@ var Header = function Header() {
   }, settings.map(function (setting) {
     return react_1["default"].createElement(MenuItem_1["default"], {
       key: setting,
-      onClick: handleCloseUserMenu
+      onClick: function onClick() {
+        return handleCloseUserMenu(setting);
+      }
     }, react_1["default"].createElement(Typography_1["default"], {
       textAlign: "center"
     }, setting));
@@ -32945,7 +32953,7 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 
-var React = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
 var Avatar_1 = __importDefault(__webpack_require__(/*! @mui/material/Avatar */ "./node_modules/@mui/material/Avatar/index.js"));
 
@@ -32980,6 +32988,8 @@ var EmptyLayout_1 = __importDefault(__webpack_require__(/*! ../../Layout/EmptyLa
 var theme = (0, styles_1.createTheme)();
 
 var Login = function Login() {
+  var submitBtn = (0, react_1.useRef)(null);
+
   var _ref = (0, inertia_react_1.useForm)({
     email: "",
     password: "",
@@ -33000,15 +33010,15 @@ var Login = function Login() {
     });
   };
 
-  return React.createElement(styles_1.ThemeProvider, {
+  return react_1["default"].createElement(styles_1.ThemeProvider, {
     theme: theme
-  }, React.createElement(Grid_1["default"], {
+  }, react_1["default"].createElement(Grid_1["default"], {
     container: true,
     component: "main",
     sx: {
       height: "100vh"
     }
-  }, React.createElement(CssBaseline_1["default"], null), React.createElement(Grid_1["default"], {
+  }, react_1["default"].createElement(CssBaseline_1["default"], null), react_1["default"].createElement(Grid_1["default"], {
     item: true,
     xs: false,
     sm: 4,
@@ -33022,7 +33032,7 @@ var Login = function Login() {
       backgroundSize: "cover",
       backgroundPosition: "center"
     }
-  }), React.createElement(Grid_1["default"], {
+  }), react_1["default"].createElement(Grid_1["default"], {
     item: true,
     xs: 12,
     sm: 8,
@@ -33030,7 +33040,7 @@ var Login = function Login() {
     component: Paper_1["default"],
     elevation: 6,
     square: true
-  }, React.createElement(Box_1["default"], {
+  }, react_1["default"].createElement(Box_1["default"], {
     sx: {
       my: 8,
       mx: 4,
@@ -33038,22 +33048,22 @@ var Login = function Login() {
       flexDirection: "column",
       alignItems: "center"
     }
-  }, React.createElement(Avatar_1["default"], {
+  }, react_1["default"].createElement(Avatar_1["default"], {
     sx: {
       m: 1,
       bgcolor: "secondary.main"
     }
-  }, React.createElement(LockOutlined_1["default"], null)), React.createElement(Typography_1["default"], {
+  }, react_1["default"].createElement(LockOutlined_1["default"], null)), react_1["default"].createElement(Typography_1["default"], {
     component: "h1",
     variant: "h5"
-  }, "Sign in"), React.createElement(Box_1["default"], {
+  }, "Sign in"), react_1["default"].createElement(Box_1["default"], {
     component: "form",
     noValidate: true,
     onSubmit: handleSubmit,
     sx: {
       mt: 1
     }
-  }, React.createElement(TextField_1["default"], {
+  }, react_1["default"].createElement(TextField_1["default"], {
     margin: "normal",
     required: true,
     fullWidth: true,
@@ -33066,7 +33076,7 @@ var Login = function Login() {
     onChange: function onChange(e) {
       return setData("email", e.target.value);
     }
-  }), React.createElement(TextField_1["default"], {
+  }), react_1["default"].createElement(TextField_1["default"], {
     margin: "normal",
     required: true,
     fullWidth: true,
@@ -33078,9 +33088,14 @@ var Login = function Login() {
     value: data.password,
     onChange: function onChange(e) {
       return setData("password", e.target.value);
+    },
+    onKeyUp: function onKeyUp(e) {
+      if (e.key === "Enter") {
+        post('/login');
+      }
     }
-  }), React.createElement(FormControlLabel_1["default"], {
-    control: React.createElement(Checkbox_1["default"], {
+  }), react_1["default"].createElement(FormControlLabel_1["default"], {
+    control: react_1["default"].createElement(Checkbox_1["default"], {
       value: "remember",
       color: "primary",
       checked: data.remember,
@@ -33089,7 +33104,7 @@ var Login = function Login() {
       }
     }),
     label: "Remember me"
-  }), React.createElement(Button_1["default"], {
+  }), react_1["default"].createElement(Button_1["default"], {
     fullWidth: true,
     variant: "contained",
     sx: {
@@ -33097,27 +33112,28 @@ var Login = function Login() {
       mb: 2
     },
     onClick: function onClick() {
-      return post('/login');
+      return post("/login");
     },
-    disabled: processing
-  }, "Sign In"), React.createElement(Grid_1["default"], {
+    disabled: processing,
+    ref: submitBtn
+  }, "Sign In"), react_1["default"].createElement(Grid_1["default"], {
     container: true
-  }, React.createElement(Grid_1["default"], {
+  }, react_1["default"].createElement(Grid_1["default"], {
     item: true,
     xs: true
-  }, React.createElement(Link_1["default"], {
+  }, react_1["default"].createElement(Link_1["default"], {
     href: "#",
     variant: "body2"
-  }, "Forgot password?")), React.createElement(Grid_1["default"], {
+  }, "Forgot password?")), react_1["default"].createElement(Grid_1["default"], {
     item: true
-  }, React.createElement(Link_1["default"], {
+  }, react_1["default"].createElement(Link_1["default"], {
     href: "#",
     variant: "body2"
   }, "Don't have an account? Sign Up"))))))));
 };
 
 Login.layout = function (page) {
-  return React.createElement(EmptyLayout_1["default"], {
+  return react_1["default"].createElement(EmptyLayout_1["default"], {
     children: page,
     title: "Welcome"
   });
@@ -33347,7 +33363,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-_inertiajs_progress__WEBPACK_IMPORTED_MODULE_3__.InertiaProgress.init();
+_inertiajs_progress__WEBPACK_IMPORTED_MODULE_3__.InertiaProgress.init({
+  color: "#fa051d"
+});
 (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.createInertiaApp)({
   resolve: function resolve(name) {
     var _page$layout;

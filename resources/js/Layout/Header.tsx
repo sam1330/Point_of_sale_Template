@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { Inertia } from "@inertiajs/inertia";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -36,8 +37,11 @@ const Header = () => {
         setAnchorElNav(null);
     };
 
-    const handleCloseUserMenu = () => {
+    const handleCloseUserMenu = (setting: string) => {
         setAnchorElUser(null);
+        if (setting === "Logout") {
+            Inertia.post("/logout");
+        }
     };
 
     return (
@@ -180,7 +184,7 @@ const Header = () => {
                             {settings.map((setting) => (
                                 <MenuItem
                                     key={setting}
-                                    onClick={handleCloseUserMenu}
+                                    onClick={() => handleCloseUserMenu(setting)}
                                 >
                                     <Typography textAlign="center">
                                         {setting}
