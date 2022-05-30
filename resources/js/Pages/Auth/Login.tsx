@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { useForm } from "@inertiajs/inertia-react";
 import EmptyLayout from "../../Layout/EmptyLayout";
+import axios from "axios";
 
 const theme = createTheme();
 
@@ -25,14 +26,22 @@ interface LoginForm {
 }
 
 const Login = () => {
-
     const submitBtn = useRef<HTMLButtonElement>(null);
 
     const { data, setData, post, processing, errors } = useForm<LoginForm>({
         email: "",
         password: "",
         remember: false,
-    }); 
+    });
+
+    const [imageUrl, setImageUrl] = useState("");
+
+    useEffect(() => {
+        console.log(process.env.MIX_UNSPLASH_API_KEY);
+        axios.get(
+            `https://api.unsplash.com/photos/tE6th1h6Bfk?client_id=${process.env.MIX_UNSPLASH_API_KEY}`
+        );
+    }, []);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement> | any) => {
         e.preventDefault();
@@ -53,8 +62,7 @@ const Login = () => {
                     sm={4}
                     md={7}
                     sx={{
-                        backgroundImage:
-                            "url(https://source.unsplash.com/random)",
+                        backgroundImage: `url(https://api.unsplash.com/photos/tE6th1h6Bfk?client_id=${process.env.UNSPLASH_API_KEY}&query=nature)`,
                         backgroundRepeat: "no-repeat",
                         backgroundColor: (t) =>
                             t.palette.mode === "light"
@@ -123,7 +131,7 @@ const Login = () => {
                                 }
                                 onKeyUp={(e) => {
                                     if (e.key === "Enter") {
-                                        post('/login');
+                                        post("/login");
                                     }
                                 }}
                             />
@@ -171,7 +179,7 @@ const Login = () => {
             </Grid>
         </ThemeProvider>
     );
-}
+};
 
 Login.layout = (page: any) => <EmptyLayout children={page} title="Welcome" />;
 
